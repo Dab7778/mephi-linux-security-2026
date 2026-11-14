@@ -1,0 +1,16 @@
+passwd
+exit
+id
+date
+date -s "+1 hour"
+sudo date -s "+1 hour"
+date
+sudo date -s "-1 hour"
+date
+sudo date -s "-1 hour"
+date
+sudo timedatectl status
+sudo cat /etc/shadow
+exit
+passwd
+exit

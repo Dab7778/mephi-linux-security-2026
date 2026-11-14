@@ -1,0 +1,78 @@
+    1  hostnamectl
+    2  cat /etc/redhat-release
+    3  groupadd students
+    4  useradd -u 1234 -G students -m -s /bin/bash -c "Student user1" user1
+    5  passwd user1
+    6  chage -M 90 user1
+    7  chage -l user1
+    8  id user1
+    9  grep -E '^(user1|students):' /etc/passwd /etc/group
+   10  grep '^user1:' /etc/shadow | cut -d: -f1,3,4,5,6
+   11  ls -ld /home/user1
+   12  find / -type f -perm -4000 2>/dev/null
+   13  find / -type f -perm -4000 -exec ls -l {} \; 2>/dev/null > ~/find_suid.out
+   14  cat ~/find_suid.out
+   15  wc -l ~/find_suid.out
+   16  ps -eo pid,ppid,ruid,ruser,euid,euser,tty,args | awk 'NR==1 || ($5==0 && $3>=1000 && $3<65534)'
+   17  ps -eo pid,ppid,ruid,ruser,euid,euser,tty,args | awk 'NR==1 || ($5==0 && $3>=1000 && $3<65534)' > ~/ps_euid0.out
+   18  cat ~/ps_euid0.out
+   19  ps -o pid,ruid,ruser,euid,euser,suid,tty,args -C passwd
+   20  exit
+   21  ls -l /etc/shadow
+   22  su - user1 -c 'cat /etc/shadow'
+   23  cp /usr/bin/cat /home/user1/cat
+   24  chown root:root /home/user1/cat
+   25  chmod 4755 /home/user1/cat
+   26  ls -l /home/user1/cat
+   27  su - user1 -c 'id; ls -l ~/cat; ~/cat /etc/shadow | head -5'
+   28  su - user1 -c 'touch ~/cap_test.txt; ls -l ~/cap_test.txt; chown root:root ~/cap_test.txt'
+   29  cp /usr/bin/chown /home/user1/chown
+   30  chown root:root /home/user1/chown
+   31  chmod 0755 /home/user1/chown
+   32  setcap cap_chown+ep /home/user1/chown
+   33  getcap /home/user1/chown
+   34  ls -l /home/user1/chown
+   35  su - user1 -c 'id; ~/chown root:root ~/cap_test.txt; ls -l ~/cap_test.txt'
+   36  su - user1 -c '~/chown baklykovda:baklykovda ~/cap_test.txt; ls -l ~/cap_test.txt'
+   37  ls -l /usr/bin/date /usr/bin/timedatectl
+   38  echo 'user1   ALL=(root) /usr/bin/date, /usr/bin/timedatectl' | EDITOR='tee -a' visudo
+   39  visudo -c
+   40  tail -3 /etc/sudoers
+   41  sudo -l -U user1
+   42  date
+   43  su - user1 -c 'date -s "+1 hour"'
+   44  su - user1 -c 'sudo date -s "+1 hour"'
+   45  date
+   46  su - user1 -c 'sudo date -s "-1 hour"; date'
+   47  su - user1 -c 'sudo cat /etc/shadow'
+   48  chronyc makestep
+   49  date
+   50  exit
+   51  su - user1
+   52  chronyc makestep
+   53  date
+   54  exit
+   55  systemctl reboot
+   56  exit
+   57  uptime
+   58  id user1
+   59  chage -l user1
+   60  ls -l /home/user1/cat /home/user1/chown
+   61  su - user1 -c '~/cat /etc/shadow | head -2'
+   62  su - user1 -c 'touch ~/cap_test2.txt; ~/chown root:root ~/cap_test2.txt; ls -l ~/cap_test2.txt'
+   63  sudo -l -U user1
+   64  cd ~
+   65  find / -type f -perm -4000 -exec ls -l {} \; 2>/dev/null > ~/find_suid.out
+   66  cat ~/find_suid.out
+   67  ps -eo pid,ppid,ruid,ruser:12,euid,euser:12,tty,args | awk 'NR==1 || ($5==0 && $3>=1000 && $3<65534)' > ~/ps_euid0.out
+   68  cat ~/ps_euid0.out
+   69  stat /home/user1 > ~/stat.out
+   70  stat /home/user1/cat >> ~/stat.out
+   71  stat /home/user1/chown >> ~/stat.out
+   72  getcap /home/user1/chown > ~/getcap.out
+   73  cat ~/stat.out ~/getcap.out
+   74  mkdir -p ~/mephi-linux-security-2026
+   75  cp /etc/passwd /etc/shadow /etc/group /etc/sudoers ~/mephi-linux-security-2026/
+   76  cp ~/stat.out ~/getcap.out ~/find_suid.out ~/ps_euid0.out ~/mephi-linux-security-2026/
+   77  cp /home/user1/.bash_history ~/mephi-linux-security-2026/user1_history.out
+   78  history > ~/history.out

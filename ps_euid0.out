@@ -1,0 +1,4 @@
+    PID    PPID  RUID RUSER         EUID EUSER        TT       COMMAND
+   1005     977  1000 baklykovda       0 root         pts/0    sudo -i
+   1009    1005  1000 baklykovda       0 root         pts/1    sudo -i
+   1172    1144  1234 user1            0 root         pts/2    passwd
